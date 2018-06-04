@@ -6,14 +6,19 @@
  * Time: 18:16
  */
 
+// redirect if logged in already
+if(isset($_SESSION['loggedin'])){
+  header('Location: ?page=main');
+}
+
 if (isset($_POST["login"])) {
-  $auth = new Authenticate($loginMessages, $conn);
-  var_dump($_POST["username"], $_POST["password"]);
-  $loginResponse = $auth->login($_POST["username"], $_POST["password"]);
-  if ($loginResponse === TRUE) {
+  $loginAuth = new Authenticate($loginMessages, $conn);
+  $loginResponse = $loginAuth->login($_POST["username"], $_POST["password"]);
+  if ($loginResponse === true) {
+    $_SESSION['loggedin'] = $_POST['username'];
     header("Location: ?page=main");
   }else{
-    var_dump($loginResponse);
+    $loginMessages->errorMessage("");
   }
 }
 
@@ -30,6 +35,11 @@ if (isset($_POST["login"])) {
       <label for="passwordLogin">Password</label>
       <input type="password" class="form-control" id="passwordLogin" name="password">
     </div>
-    <button type="submit" class="btn btn-primary" name="login">Submit</button>
+    <button type="submit" class="btn btn-primary mb-5" name="login">Login</button>
+    <?php
+    if(isset($_POST['login'])) {
+      $loginMessages->outputErrors();
+    }
+    ?>
   </form>
 </div>

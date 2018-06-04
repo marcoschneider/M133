@@ -6,6 +6,8 @@
  * Time: 17:04
  */
 
+//error_reporting(E_ALL &~ E_NOTICE);
+
 define('RESOURCE_PATH', realpath(dirname(__FILE__)));
 define('TEMPLATES_PATH', realpath(dirname(__DIR__)).'/templates');
 
